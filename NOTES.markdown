@@ -54,6 +54,9 @@ A feature with a unique value per entry predicts nothing as every entry is diffe
 A feature with only a single value for all entries predicts nothing as every entry is the same.
 The histogram of values will show the spread of values in a table.
 
+How
+---
+
 ➜ CREATE TABLE boring_features (all_unique SERIES, all_same INTEGER, two_values INTEGER, five_values INTEGER);
 CREATE TABLE
 
@@ -123,3 +126,6 @@ most_common_vals  │ {1,5,3,4,2}
 most_common_freqs │ {0.203367,0.201733,0.2017,0.197633,0.195567}
 histogram_bounds  │ [null]
 correlation       │ 0.186589
+
+Elastic Search and TF-IDF
+-------------------------
