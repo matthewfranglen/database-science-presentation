@@ -83,49 +83,44 @@ https://www.postgresql.org/docs/current/static/planner-stats.html
 https://www.postgresql.org/docs/current/static/planner-stats-details.html
 https://www.postgresql.org/docs/current/static/row-estimation-examples.html
 
-➜ CREATE TABLE boring_features
-    (all_unique SERIAL, all_same INTEGER, two_values INTEGER, five_values INTEGER);
+➜ CREATE TABLE features
+    (all_unique SERIAL, all_same INTEGER DEFAULT 1, five_values INTEGER, random_values INTEGER);
+➜ INSERT INTO features
+    (five_values, random_values)
+    SELECT n, random() * 10000
+        FROM generate_series(1, 5) n, generate_series(1, 200000);
+➜ ANALYZE features;
 
-➜ INSERT INTO boring_features
-    (all_same, five_values, two_values)
-    SELECT 1, n, m
-        FROM generate_series(1, 5) n, generate_series(0, 1) m, generate_series(1, 100000);
-INSERT 0 1000000
-
-➜ ANALYZE boring_features;
-
-➜ SELECT attname AS column, n_distinct, most_common_vals, most_common_freqs, histogram_bounds, correlation FROM pg_stats WHERE tablename = 'boring_features';
-─[ RECORD 2 ]─────┼───────────────────────────────────────────────────
+➜ SELECT attname AS column, n_distinct, most_common_vals, most_common_freqs, histogram_bounds, correlation FROM pg_stats WHERE tablename = 'features';
+─[ RECORD 1 ]─────┬───────────────────────────────────────────────────
 column            │ all_unique
 n_distinct        │ -1
 most_common_vals  │ [null]
 most_common_freqs │ [null]
-histogram_bounds  │ {38,10792,20722,30455,40145,50156,60402,70445,...
+histogram_bounds  │ {4,10093,19649,29321,39013,49415,60620,69880,...
 correlation       │ 1
-
-─[ RECORD 1 ]─────┬───────────────────────────────────────────────────
+─[ RECORD 2 ]─────┼───────────────────────────────────────────────────
 column            │ all_same
 n_distinct        │ 1
 most_common_vals  │ {1}
 most_common_freqs │ {1}
 histogram_bounds  │ [null]
 correlation       │ 1
-
 ─[ RECORD 3 ]─────┼───────────────────────────────────────────────────
-column            │ two_values
-n_distinct        │ 2
-most_common_vals  │ {1,0}
-most_common_freqs │ {0.502733,0.497267}
-histogram_bounds  │ [null]
-correlation       │ 0.506586
-
-─[ RECORD 4 ]─────┼───────────────────────────────────────────────────
 column            │ five_values
 n_distinct        │ 5
-most_common_vals  │ {1,5,3,4,2}
-most_common_freqs │ {0.203367,0.201733,0.2017,0.197633,0.195567}
+most_common_vals  │ {1,2,4,5,3}
+most_common_freqs │ {0.203767,0.2006,0.200333,0.197733,0.197567}
 histogram_bounds  │ [null]
-correlation       │ 0.186589
+correlation       │ 1
+─[ RECORD 4 ]─────┼───────────────────────────────────────────────────
+column            │ random_values
+n_distinct        │ 9995
+most_common_vals  │ {5456,320,1726,2783,3178,4224,7841,8785,551,...
+most_common_freqs │ {0.0004,0.000366667,0.000333333,0.000333333,...
+histogram_bounds  │ {0,99,193,295,402,499,606,725,840,927,1035,...
+correlation       │ 0.00250417
+
 
 Elastic Search and TF-IDF
 -------------------------
