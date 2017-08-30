@@ -54,10 +54,10 @@ A feature with a unique value per entry predicts nothing as every entry is diffe
 A feature with only a single value for all entries predicts nothing as every entry is the same.
 The histogram of values will show the spread of values in a table.
 
-➜ CREATE TABLE boring_features (all_same INTEGER, all_unique INTEGER, two_values INTEGER, five_values INTEGER);
+➜ CREATE TABLE boring_features (all_unique SERIES, all_same INTEGER, two_values INTEGER, five_values INTEGER);
 CREATE TABLE
 
-➜ INSERT INTO boring_features (all_same, all_unique, five_values, two_values) SELECT 1, n + (5 * m), n, m FROM generate_series(1, 5) n, generate_series(0, 1) m;
+➜ INSERT INTO boring_features (all_same, five_values, two_values) SELECT 1, n, m FROM generate_series(1, 5) n, generate_series(0, 1) m, generate_series;
 INSERT 0 10
 
 ➜ ANALYZE boring_features ;
@@ -79,3 +79,47 @@ ANALYZE
 https://www.postgresql.org/docs/current/static/planner-stats.html
 https://www.postgresql.org/docs/current/static/planner-stats-details.html
 https://www.postgresql.org/docs/current/static/row-estimation-examples.html
+
+➜ CREATE TABLE boring_features
+    (all_unique SERIAL, all_same INTEGER, two_values INTEGER, five_values INTEGER);
+
+➜ INSERT INTO boring_features
+    (all_same, five_values, two_values)
+    SELECT 1, n, m
+        FROM generate_series(1, 5) n, generate_series(0, 1) m, generate_series(1, 100000);
+INSERT 0 1000000
+
+➜ ANALYZE boring_features;
+
+➜ SELECT attname AS column, n_distinct, most_common_vals, most_common_freqs, histogram_bounds, correlation FROM pg_stats WHERE tablename = 'boring_features';
+─[ RECORD 1 ]─────┬───────────────────────────────────────────────────
+column            │ all_same
+n_distinct        │ 1
+most_common_vals  │ {1}
+most_common_freqs │ {1}
+histogram_bounds  │ [null]
+correlation       │ 1
+
+─[ RECORD 2 ]─────┼───────────────────────────────────────────────────
+column            │ all_unique
+n_distinct        │ -1
+most_common_vals  │ [null]
+most_common_freqs │ [null]
+histogram_bounds  │ {38,10792,20722,30455,40145,50156,60402,70445,...
+correlation       │ 1
+
+─[ RECORD 3 ]─────┼───────────────────────────────────────────────────
+column            │ two_values
+n_distinct        │ 2
+most_common_vals  │ {1,0}
+most_common_freqs │ {0.502733,0.497267}
+histogram_bounds  │ [null]
+correlation       │ 0.506586
+
+─[ RECORD 4 ]─────┼───────────────────────────────────────────────────
+column            │ five_values
+n_distinct        │ 5
+most_common_vals  │ {1,5,3,4,2}
+most_common_freqs │ {0.203367,0.201733,0.2017,0.197633,0.195567}
+histogram_bounds  │ [null]
+correlation       │ 0.186589
