@@ -75,3 +75,7 @@ ANALYZE
  all_unique  │         -1 │ [null]           │ [null]                │ {1,2,3,4,5,6,7,8,9,10} │    0.636364
  two_values  │       -0.2 │ {0,1}            │ {0.5,0.5}             │ [null]                 │    0.636364
  five_values │       -0.5 │ {1,2,3,4,5}      │ {0.2,0.2,0.2,0.2,0.2} │ [null]                 │           1
+
+https://www.postgresql.org/docs/current/static/planner-stats.html
+https://www.postgresql.org/docs/current/static/planner-stats-details.html
+https://www.postgresql.org/docs/current/static/row-estimation-examples.html
