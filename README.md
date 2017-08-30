@@ -19,3 +19,7 @@ psql -p $(docker port pg 5432 | sed -e 's/.*://') -h localhost -U postgres postg
 ```
 
 This will allow you to easily run the sample SQL statements.
+
+```
+docker run --rm --name es -P -e "http.host=0.0.0.0" -e "transport.host=127.0.0.1" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:5.5.2
+```
