@@ -95,20 +95,20 @@ INSERT 0 1000000
 ➜ ANALYZE boring_features;
 
 ➜ SELECT attname AS column, n_distinct, most_common_vals, most_common_freqs, histogram_bounds, correlation FROM pg_stats WHERE tablename = 'boring_features';
-─[ RECORD 1 ]─────┬───────────────────────────────────────────────────
-column            │ all_same
-n_distinct        │ 1
-most_common_vals  │ {1}
-most_common_freqs │ {1}
-histogram_bounds  │ [null]
-correlation       │ 1
-
 ─[ RECORD 2 ]─────┼───────────────────────────────────────────────────
 column            │ all_unique
 n_distinct        │ -1
 most_common_vals  │ [null]
 most_common_freqs │ [null]
 histogram_bounds  │ {38,10792,20722,30455,40145,50156,60402,70445,...
+correlation       │ 1
+
+─[ RECORD 1 ]─────┬───────────────────────────────────────────────────
+column            │ all_same
+n_distinct        │ 1
+most_common_vals  │ {1}
+most_common_freqs │ {1}
+histogram_bounds  │ [null]
 correlation       │ 1
 
 ─[ RECORD 3 ]─────┼───────────────────────────────────────────────────
