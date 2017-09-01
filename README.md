@@ -46,3 +46,13 @@ You can then use this in curl requests or for use in python.
 
 Postgres
 --------
+
+...
+
+Elastic Search
+--------------
+
+You can load the pickled data using the `populate_es.py` script.
+
+This requires a [pyenv](https://github.com/pyenv/pyenv) at python 3.6.2.
+You need to install the requirements with `pip install -r requirements.txt`.
