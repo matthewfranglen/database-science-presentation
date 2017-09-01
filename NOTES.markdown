@@ -57,28 +57,6 @@ The histogram of values will show the spread of values in a table.
 How
 ---
 
-➜ CREATE TABLE boring_features (all_unique SERIES, all_same INTEGER, two_values INTEGER, five_values INTEGER);
-CREATE TABLE
-
-➜ INSERT INTO boring_features (all_same, five_values, two_values) SELECT 1, n, m FROM generate_series(1, 5) n, generate_series(0, 1) m, generate_series;
-INSERT 0 10
-
-➜ ANALYZE boring_features ;
-ANALYZE
-
-➜ SELECT relname AS table, reltuples AS rows FROM pg_class WHERE relname = 'boring_features';
-      table      │ rows
-─────────────────┼──────
- boring_features │   10
-
-➜ SELECT attname AS column, n_distinct, most_common_vals, most_common_freqs, histogram_bounds, correlation FROM pg_stats WHERE tablename = 'boring_features';
-   column    │ n_distinct │ most_common_vals │   most_common_freqs   │    histogram_bounds    │ correlation
-─────────────┼────────────┼──────────────────┼───────────────────────┼────────────────────────┼─────────────
- all_same    │          1 │ {1}              │ {1}                   │ [null]                 │           1
- all_unique  │         -1 │ [null]           │ [null]                │ {1,2,3,4,5,6,7,8,9,10} │    0.636364
- two_values  │       -0.2 │ {0,1}            │ {0.5,0.5}             │ [null]                 │    0.636364
- five_values │       -0.5 │ {1,2,3,4,5}      │ {0.2,0.2,0.2,0.2,0.2} │ [null]                 │           1
-
 https://www.postgresql.org/docs/current/static/planner-stats.html
 https://www.postgresql.org/docs/current/static/planner-stats-details.html
 https://www.postgresql.org/docs/current/static/row-estimation-examples.html
