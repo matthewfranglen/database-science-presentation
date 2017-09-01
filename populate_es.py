@@ -5,8 +5,9 @@ This populates elasticsearch with the pickled json data provided
 
 import argparse
 import pickle
+from collections import deque
 from elasticsearch import Elasticsearch
-from elasticsearch.helpers import bulk
+from elasticsearch.helpers import parallel_bulk
 
 def main(): # pylint: disable=missing-docstring
     parser = argparse.ArgumentParser(description='Populate elasticsearch with pickled data')
@@ -26,7 +27,11 @@ def load(client, filename):
     with open(filename, "rb") as handle:
         data = pickle.load(handle)
 
-    bulk(client, ({**entry, '_index': 'documents', '_type': 'document'} for entry in data))
+    records = (
+        {**entry, '_id': entry['id'], '_index': 'documents', '_type': 'document'}
+        for entry in data
+    )
+    deque(parallel_bulk(client, records), maxlen=0)
 
 if __name__ == '__main__':
     main()
