@@ -18,7 +18,10 @@ curl --fail $(docker port es 9200)/documents/document/_search'?pretty&size=0' -d
 {
     "ids": .aggregations.pk.value[0].pks,
     "parameters": {
-        "fields": [ "fullText" ]
+        "fields": [ "fullText" ],
+        "offsets": false,
+        "positions": false,
+        "field_statistics": false
     }
 }
 ' > "${TERMVECTOR_FILE}"
