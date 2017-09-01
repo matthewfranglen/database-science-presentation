@@ -1,10 +1,12 @@
-# Database Data Science Presentation
+Database Data Science Presentation
+==================================
 
 See it [here](https://matthewfranglen.github.io/database-science-presentation/).
 
 This was built using [reveal.js](https://github.com/hakimel/reveal.js)
 
-## Docker
+Docker
+------
 
 You can use docker to run postgres:
 
@@ -20,6 +22,16 @@ psql -p $(docker port pg 5432 | sed -e 's/.*://') -h localhost -U postgres postg
 
 This will allow you to easily run the sample SQL statements.
 
+You can use docker to run elastic search:
+
 ```
 docker run --rm --name es -P -e "http.host=0.0.0.0" -e "transport.host=127.0.0.1" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:5.5.2
 ```
+
+You can get the port that it runs on in a similar manner:
+
+```
+docker port es 9200
+```
+
+You can then use this in curl requests or for use in python.
