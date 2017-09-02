@@ -54,8 +54,8 @@ A feature with a unique value per entry predicts nothing as every entry is diffe
 A feature with only a single value for all entries predicts nothing as every entry is the same.
 The histogram of values will show the spread of values in a table.
 
-How
----
+How to get Statistics from Postgres
+-----------------------------------
 
 https://www.postgresql.org/docs/current/static/planner-stats.html
 https://www.postgresql.org/docs/current/static/planner-stats-details.html
@@ -102,3 +102,19 @@ correlation       │ 0.00250417
 
 Elastic Search and TF-IDF
 -------------------------
+
+Elastic Search provides excellent text search.
+It doesn't treat matching as a boolean question, instead it indicates how good the match is by scoring it.
+One of the ways it scores it is to use TF-IDF.
+
+When a word in the query is frequent in the match and rare in most documents then it increases the score more.
+This is because the word is a strong indicator of the quality of the match.
+Common words still contribute to the score, just much less.
+
+To do all this elastic search must track term frequency in documents.
+
+How to get Statistics from Elastic Search
+-----------------------------------------
+
+Pain in the butt tbh.
+Go through the notebooks.
